@@ -25,7 +25,18 @@ I can find the mean flipper length.
 
 The mean flipper length is: `r mean(pull(penguins, flipper_length_mm), na.rm = T)`
 
-```{r}
+## Make a scatterplot of flipper_length_mm (y) vs bill_length_mm (x)
 
+```{r}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+
+ggsave("./scatterplot.pdf")
 ```
+
+
+ggsave
+
+
+## Export your  scatterplot to  project directory using ggsave
+
 

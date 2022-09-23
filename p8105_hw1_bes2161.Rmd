@@ -3,29 +3,29 @@ title: "p8105_hw1_bes2161"
 output: github_document
 date: "2022-09-22"
 ---
-## Load libraries
+#### Load libraries
 
 ```{r}
 library(tidyverse)
 ```
 
-## Load dataset
+#### Problem 1
+
+_Load dataset:_
 
 ```{r}
 data("penguins", package = "palmerpenguins")
 ```
 
-# Description of dataset
+_Description of dataset:_
 
-This dataset includes variables for the name of the species and island, and values related to bill, flipper, body mass, sex, and year.
+This dataset includes information about penguins, including variables for the name of the species, name of the island, year, as well as values for bill, flipper, body mass, and sex of the penguins.
 
-There are 344 rows and 8 columns.
-
-I can find the mean flipper length.
+There are 344 rows and 8 columns in the dataset.
 
 The mean flipper length is: `r mean(pull(penguins, flipper_length_mm), na.rm = T)`
 
-## Make a scatterplot of flipper_length_mm (y) vs bill_length_mm (x)
+_Scatterplot of flipper length vs bill length:_
 
 ```{r}
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
@@ -33,10 +33,49 @@ ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)
 ggsave("./scatterplot.pdf")
 ```
 
+#### Problem 2
 
-ggsave
+_Create dataset:_
 
+```{r}
+df = tibble(
+  norm_samp = rnorm(10, mean = 0, sd = 1),
+  norm_samp_pos = norm_samp > 0,
+  vec_char = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
+  vec_factor = factor(c("sunny", "sunny", "sunny", "cloudy", "cloudy", "cloudy", "cloudy", "rainy", "rainy", "rainy"))
+)
+```
 
-## Export your  scatterplot to  project directory using ggsave
+_Find the mean of each variable:_
 
+```{r}
+df %>%
+  pull(norm_samp) %>%
+  mean()
 
+df %>%
+  pull(norm_samp_pos) %>%
+  mean()
+
+df %>%
+  pull(vec_char) %>%
+  mean()
+
+df %>%
+  pull(vec_factor) %>%
+  mean()
+```
+
+We cannot find the mean for the last two (character and factor) variables, but we can  find the mean for the first two (numeric) variables.
+
+_Converting variables:_
+
+```{r, eval = FALSE}
+as.numeric(as.numeric(df$norm_samp))
+as.numeric(as.numeric(df$norm_samp_pos))
+as.numeric(as.character(df$vec_char))
+as.numeric(as.character(df$vec_factor))
+
+```
+
+The `as.numeric` function converts variables to numeric. In this example, the first two variables were already numeric and remain so. The character variable (in this case my character variable was numbers) was also changed to numeric. However, we received NAs when we tried to convert the factor variable to numeric since the values are words, not numbers. This helps explain why the mean cannot be taken for variables that are not numeric or logical.
